@@ -1,0 +1,4 @@
+type Query {
+  # Get a presigned upload request for Amazon S3
+  getUploadTicket: Ticket!
+}

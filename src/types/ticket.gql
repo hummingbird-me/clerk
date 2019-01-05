@@ -1,0 +1,15 @@
+"""
+A presigned upload provided by the server
+"""
+type Ticket {
+  url: String!
+  fields: [TicketField!]!
+}
+
+"""
+A field which Amazon requests be sent with the upload
+"""
+type TicketField {
+  name: String!
+  value: String!
+}

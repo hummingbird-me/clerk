@@ -7,14 +7,16 @@
     "start": "npm run serve",
     "build": "tsc",
     "build-watch": "tsc -w",
+    "preparse": "node compile-gql.js",
+    "preparse-watch": "nodemon -e gql compile-gql.js",
     "serve": "node dist/server.js",
     "serve-watch": "nodemon dist/server.js",
     "serve-watch-debug": "nodemon --inspect dist/server.js",
     "test": "jest --forceExit --coverage --verbose",
     "test-watch": "npm run test -- --watchAll",
     "lint": "tslint -c tslint.json -p tsconfig.json",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run build-watch\" \"npm run serve-watch\"",
-    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run build-watch\" \"npm run serve-watch-debug\""
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,GraphQL,Node\" -c \"cyan.bold,magenta.bold,green.bold\" \"npm run build-watch\" \"npm run preparse-watch\" \"npm run serve-watch\"",
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,GraphQL,Node\" -c \"cyan.bold,magenta.bold,green.bold\" \"npm run build-watch\" \"npm run preparse-watch\" \"npm run serve-watch-debug\""
   },
   "author": "Emma Lejeck <nuck@kitsu.io>",
   "license": "Apache-2.0",

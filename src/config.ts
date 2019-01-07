@@ -10,9 +10,12 @@ export type View = {
   generate: (file: File) => Promise<any>;
 };
 
+export type S3Config = S3.ClientConfiguration & { prefix?: string };
+export type SQSConfig = SQS.ClientConfiguration & { QueueName: string };
+
 export type Config = {
   db: KnexConfig,
-  s3: S3.ClientConfiguration & { prefix?: string },
-  sqs: SQS.ClientConfiguration & { QueueName: string },
+  s3: S3Config,
+  sqs: SQSConfig,
   views: Array<View>
 };

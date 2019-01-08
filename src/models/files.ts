@@ -54,3 +54,18 @@ export async function updateMetadata(db: Knex, id: string, metadata: {}): Promis
     metadata: db.raw('metadata || ?', JSON.stringify(metadata))
   }).returning('*');
 }
+
+/**
+ * Check if a file is ready to be garbage-collected yet
+ * @param  db the database connection
+ * @param  file_id the file ID
+ * @return whether the file is ready to be collected
+ */
+export async function isGarbage(db: Knex, file_id: string) {
+  // Since we only need to check if there is at least one reference, we `LIMIT 1`
+  const { count } = await db('file_references').where({ file_id })
+                                               .whereNot('released_at', '<', 'NOW()')
+                                               .first().count();
+
+  return count !== '0';
+}

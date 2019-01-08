@@ -7,29 +7,50 @@ export class NotFoundError extends Error {}
 
 export type File = {
   id: string,
-  mime: string,
-  metadata: {}
+  mime_type: string,
+  size: string,
+  metadata: object
 };
 
-export async function getById(db: Knex, id: string): Promise<File> {
+/**
+ * Look up a file's information based on the ID
+ * @param  db the database connection
+ * @param  id the File identifier
+ * @return the file information
+ */
+export async function find(db: Knex, id: string): Promise<File> {
   return db('files').where({ id }).first();
 }
 
-export async function create(db: Knex): Promise<string> {
+/**
+ * Create a new file
+ * @param  db the database connection
+ * @param  mime_type the MIME type of the file
+ * @param  size the number of bytes in the file (in a string because BigInt)
+ * @return the file ID
+ */
+export async function create(db: Knex, mime_type: string, size: string): Promise<string> {
   const id = nanoid(NANOID_LENGTH);
 
-  await db('files').insert({
-    id: id,
+  return db('files').insert({
+    id,
+    mime_type,
+    size,
     metadata: {
       createdAt: Date.now()
     }
-  });
-
-  return id;
+  }).returning('id');
 }
 
-export async function updateMetadata(db: Knex, id: string, metadata: {}) {
-  await db('files').where({ id }).update({
+/**
+ * Adds metadata to a File
+ * @param  db the database connection
+ * @param  id the file ID
+ * @param  metadata a metadata object to merge into the File's existing metadata
+ * @return the file information after modification
+ */
+export async function updateMetadata(db: Knex, id: string, metadata: {}): Promise<File> {
+  return db('files').where({ id }).update({
     metadata: db.raw('metadata || ?', JSON.stringify(metadata))
-  });
+  }).returning('*');
 }

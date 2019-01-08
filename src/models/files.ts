@@ -1,7 +1,7 @@
 import Knex from 'knex';
 import nanoid from 'nanoid';
 
-const NANOID_LENGTH = 70;
+const NANOID_LENGTH = 50;
 
 export class NotFoundError extends Error {}
 

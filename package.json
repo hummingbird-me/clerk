@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
-    "@types/graphql": "^14.0.3",
+    "@types/graphql": "^14.0.4",
     "@types/jest": "^23.3.12",
     "@types/knex": "^0.15.1",
     "@types/nanoid": "^1.2.0",

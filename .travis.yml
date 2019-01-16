@@ -1,0 +1,11 @@
+language: node_js
+cache: npm
+
+env:
+  - DATABASE_URL="psql://postgres:@localhost/clerk_test"
+
+addons:
+  postgresql: "10"
+
+before_script:
+  - psql -c 'create database clerk_test;' -U postgres

@@ -18,9 +18,21 @@ export type Reference = {
  * @param  service_id a string identifying the service which checked out this connection
  * @return the reference info
  */
-export async function create(db: Knex, file_id: string, service_id: string): Promise<Reference> {
+export async function create(
+  db: Knex,
+  file_id: string,
+  service_id: string,
+  expires_at?: Date
+): Promise<Reference> {
   const key = nanoid(NANOID_LENGTH);
-  return db('file_references').insert({ file_id, key, service_id }).returning('*');
+  const [reference] = await db('file_references').insert({
+    file_id,
+    key,
+    service_id,
+    released_at: expires_at
+  }).returning('*');
+
+  return reference;
 }
 
 /**

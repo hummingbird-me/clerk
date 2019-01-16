@@ -9,7 +9,7 @@ export type File = {
   id: string,
   mime_type: string,
   size: string,
-  metadata: object
+  metadata: any
 };
 
 /**
@@ -32,14 +32,16 @@ export async function find(db: Knex, id: string): Promise<File> {
 export async function create(db: Knex, mime_type: string, size: string): Promise<string> {
   const id = nanoid(NANOID_LENGTH);
 
-  return db('files').insert({
+  await db('files').insert({
     id,
     mime_type,
     size,
     metadata: {
       createdAt: Date.now()
     }
-  }).returning('id');
+  });
+
+  return id;
 }
 
 /**
@@ -50,9 +52,11 @@ export async function create(db: Knex, mime_type: string, size: string): Promise
  * @return the file information after modification
  */
 export async function updateMetadata(db: Knex, id: string, metadata: {}): Promise<File> {
-  return db('files').where({ id }).update({
+  const [file] = await db('files').where({ id }).update({
     metadata: db.raw('metadata || ?', JSON.stringify(metadata))
   }).returning('*');
+
+  return file;
 }
 
 /**
@@ -63,9 +67,11 @@ export async function updateMetadata(db: Knex, id: string, metadata: {}): Promis
  */
 export async function isGarbage(db: Knex, file_id: string) {
   // Since we only need to check if there is at least one reference, we `LIMIT 1`
-  const { count } = await db('file_references').where({ file_id })
-                                               .whereNot('released_at', '<', 'NOW()')
-                                               .first().count();
+  const { count: living } = await db('file_references').where({ file_id })
+                                                       .where((q) => q
+                                                         .whereNull('released_at')
+                                                         .orWhereNot(db.raw('released_at < NOW()'))
+                                                       ).first().count();
 
-  return count !== '0';
+  return living === '0';
 }

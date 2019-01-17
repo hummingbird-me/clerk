@@ -8,9 +8,25 @@ export class NotFoundError extends Error {}
 export type File = {
   id: string,
   mime_type: string,
-  size: string,
+  size: number,
   metadata: any
 };
+
+/**
+ * Cast a database row into a File object
+ * @param  obj database row
+ * @return the File object
+ */
+function castFile(obj: {
+  id: string,
+  mime_type: string,
+  size: number | string,
+  metadata: any
+}): File {
+  if (typeof obj.size === 'string') obj.size = parseInt(obj.size, 10);
+
+  return obj as File;
+}
 
 /**
  * Look up a file's information based on the ID
@@ -19,17 +35,19 @@ export type File = {
  * @return the file information
  */
 export async function find(db: Knex, id: string): Promise<File> {
-  return db('files').where({ id }).first();
+  const file = await db('files').where({ id }).first();
+
+  return castFile(file);
 }
 
 /**
  * Create a new file
  * @param  db the database connection
  * @param  mime_type the MIME type of the file
- * @param  size the number of bytes in the file (in a string because BigInt)
+ * @param  size the number of bytes in the file
  * @return the file ID
  */
-export async function create(db: Knex, mime_type: string, size: string): Promise<string> {
+export async function create(db: Knex, mime_type: string, size: number): Promise<string> {
   const id = nanoid(NANOID_LENGTH);
 
   await db('files').insert({
@@ -56,7 +74,7 @@ export async function updateMetadata(db: Knex, id: string, metadata: {}): Promis
     metadata: db.raw('metadata || ?', JSON.stringify(metadata))
   }).returning('*');
 
-  return file;
+  return castFile(file);
 }
 
 /**

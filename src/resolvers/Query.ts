@@ -16,7 +16,7 @@ export async function getUploadTicket (
   }
 ) {
   const prefix = context.config.s3.prefix;
-  const id = await createFile(context.db);
+  const id = await createFile(context.db, args.type, args.size);
   const key = prefix ? `${prefix}${id}` : id;
 
   return context.s3.createPresignedPost({

@@ -36,7 +36,7 @@
     "@types/jest": "^23.3.12",
     "@types/knex": "^0.15.1",
     "@types/nanoid": "^1.2.0",
-    "@types/node": "^10.12.18",
+    "@types/node": "^11.9.0",
     "@types/pg": "^7.4.11",
     "@types/supertest": "^2.0.7",
     "chai": "^4.2.0",

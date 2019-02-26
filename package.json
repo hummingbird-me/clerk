@@ -33,7 +33,7 @@
     "@types/chai": "^4.1.7",
     "@types/glob": "^7.1.1",
     "@types/graphql": "^14.0.4",
-    "@types/jest": "^23.3.12",
+    "@types/jest": "^24.0.9",
     "@types/knex": "^0.15.1",
     "@types/nanoid": "^1.2.0",
     "@types/node": "^10.12.18",

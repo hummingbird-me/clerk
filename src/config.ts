@@ -1,5 +1,5 @@
 import { Config as KnexConfig } from 'knex';
-import { S3, SQS } from 'aws-sdk';
+import ClerkStore from './stores/base';
 
 export type View = {
   // What name should be used for this view
@@ -10,12 +10,8 @@ export type View = {
   generate: (file: File) => Promise<any>;
 };
 
-export type S3Config = S3.ClientConfiguration & { prefix?: string };
-export type SQSConfig = SQS.ClientConfiguration & { QueueName: string };
-
 export type Config = {
   db: KnexConfig,
-  s3: S3Config,
-  sqs: SQSConfig,
+  store: ClerkStore,
   views: Array<View>
 };

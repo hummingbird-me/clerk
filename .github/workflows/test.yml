@@ -12,10 +12,6 @@ jobs:
     container:
       image: node:${{ matrix.node-version }}
 
-    env:
-      DATABASE_URL: psql://postgres:postgres@postgres:${{ job.services.postgres.ports[5432] }}/clerk_test
-      CI: true
-
     services:
       postgres:
         image: postgres:11
@@ -33,6 +29,14 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Set up database
+      env:
+        DATABASE_URL: psql://postgres:postgres@postgres:${{ job.services.postgres.ports[5432] }}/clerk_test
+        CI: true
       run: |
         psql -c 'create database clerk_test;' -U postgres
         psql -U postgres -d clerk_test < src/db/schema.sql
+    - name: Run tests
+      env:
+        DATABASE_URL: psql://postgres:postgres@postgres:${{ job.services.postgres.ports[5432] }}/clerk_test
+        CI: true
+      run: npm test

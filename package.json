@@ -27,7 +27,7 @@
     "graphql": "^14.0.2",
     "knex": "^0.19.5",
     "nanoid": "^2.1.4",
-    "pg": "^7.12.1"
+    "pg": "^7.14.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",

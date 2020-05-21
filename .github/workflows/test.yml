@@ -32,8 +32,14 @@ jobs:
       run: npm ci
     - name: Set up database
       run: |
-        psql -c 'create database clerk_test;' -U postgres
-        psql -U postgres -d clerk_test < src/db/schema.sql
+        psql -c 'create database clerk_test;'
+        psql < src/db/schema.sql
+      env:
+        PGPASSWORD: postgres
+        PGUSER: postgres
+        PGHOST: postgres
+        PGPORT: ${{ job.services.postgres.ports[5432] }}
+        PGDATABASE: clerk_test
     - name: Run tests
       env:
         DATABASE_URL: psql://postgres:postgres@postgres:${{ job.services.postgres.ports[5432] }}/clerk_test

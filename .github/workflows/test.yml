@@ -37,7 +37,7 @@ jobs:
       env:
         PGPASSWORD: postgres
         PGUSER: postgres
-        PGHOST: postgres
+        PGHOST: localhost
         PGPORT: ${{ job.services.postgres.ports[5432] }}
         PGDATABASE: clerk_test
     - name: Run tests

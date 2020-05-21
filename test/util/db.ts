@@ -2,7 +2,7 @@ import Knex from 'knex';
 
 const pool = Knex({
   client: 'pg',
-  connection: 'psql://localhost/clerk_test',
+  connection: process.env.DATABASE_URL || 'psql://localhost/clerk_test',
   pool: { min: 0, max: 10 }
 });
 

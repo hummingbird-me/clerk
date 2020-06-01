@@ -34,10 +34,10 @@ function castFile(obj: {
  * @param  id the File identifier
  * @return the file information
  */
-export async function find(db: Knex, id: string): Promise<File> {
+export async function find(db: Knex, id: string): Promise<File | null> {
   const file = await db('files').where({ id }).first();
 
-  return castFile(file);
+  return file && castFile(file);
 }
 
 /**

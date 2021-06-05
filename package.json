@@ -22,7 +22,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "apollo-server": "^2.9.13",
-    "aws-sdk": "^2.585.0",
+    "aws-sdk": "^2.922.0",
     "glob": "^7.1.6",
     "graphql": "^14.0.2",
     "knex": "^0.19.5",
